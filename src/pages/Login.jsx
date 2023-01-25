@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import ContextLogin from '../context/ContextLogin';
 
 export default function Login() {
-  const { onHandleChange, formValues } = useContext(ContextLogin);
+  const { onHandleChange, formValues, isButtonDisable } = useContext(ContextLogin);
   return (
     <div>
       <form action="">
@@ -25,6 +25,7 @@ export default function Login() {
         <button
           data-testid="login-submit-btn"
           type="submit"
+          disabled={ !isButtonDisable }
         >
           Submit
 

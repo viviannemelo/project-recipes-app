@@ -4,11 +4,11 @@ import useFormInput from '../hooks/useFormInput';
 import ContextLogin from './ContextLogin';
 
 export default function LoginProvider({ children }) {
-  const { onHandleChange, formValues } = useFormInput();
+  const { onHandleChange, formValues, isButtonDisable } = useFormInput();
 
   const values = useMemo(
-    () => ({ onHandleChange, formValues }),
-    [onHandleChange, formValues],
+    () => ({ onHandleChange, formValues, isButtonDisable }),
+    [onHandleChange, formValues, isButtonDisable],
   );
   return (
     <ContextLogin.Provider value={ values }>
