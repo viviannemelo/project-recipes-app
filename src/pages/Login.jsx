@@ -5,7 +5,7 @@ import ContextLogin from '../context/ContextLogin';
 export default function Login() {
   const { onHandleChange, formValues, isButtonDisable } = useContext(ContextLogin);
   const history = useHistory();
-
+  // localStorage
   function savedLocalStorage() {
     localStorage.setItem('user', JSON.stringify({ email: formValues.email }));
     return history.push('/meals');
