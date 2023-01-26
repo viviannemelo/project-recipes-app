@@ -4,14 +4,18 @@ import ContextAPP from '../context/ContextAPP';
 
 function SearchBar(props) {
   const [text, setText] = useState('');
-  const { radio, radioChange, checkAndCallApi } = useContext(ContextAPP);
+  const { radio, radioChange, checkAndCallApi,
+    mealResults, drinkResults } = useContext(ContextAPP);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     const { name } = props;
     if (text.length > 1 && radio === 'first-letter') {
       global.alert('Your search must have only 1 (one) character');
     } else {
-      checkAndCallApi(name, radio, text);
+      await checkAndCallApi(name, radio, text);
+      if (mealResults.length === 0 || drinkResults.length === 0) {
+        global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      }
     }
   };
 
