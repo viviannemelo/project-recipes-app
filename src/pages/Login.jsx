@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import ContextLogin from '../context/ContextLogin';
 
 export default function Login() {
   const { onHandleChange, formValues, isButtonDisable } = useContext(ContextLogin);
+  const history = useHistory();
 
   function savedLocalStorage() {
-    return localStorage.setItem('user', JSON.stringify({ email: formValues.email }));
+    localStorage.setItem('user', JSON.stringify({ email: formValues.email }));
+    return history.push('/meals');
   }
 
   return (
