@@ -3,6 +3,11 @@ import ContextLogin from '../context/ContextLogin';
 
 export default function Login() {
   const { onHandleChange, formValues, isButtonDisable } = useContext(ContextLogin);
+
+  function savedLocalStorage() {
+    return localStorage.setItem('user', JSON.stringify({ email: formValues.email }));
+  }
+
   return (
     <div>
       <form action="">
@@ -26,6 +31,7 @@ export default function Login() {
           data-testid="login-submit-btn"
           type="submit"
           disabled={ !isButtonDisable }
+          onClick={ savedLocalStorage }
         >
           Submit
 
