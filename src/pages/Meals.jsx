@@ -9,7 +9,7 @@ function Meals() {
     <div>
       { mealResults.length === 1
         && <Redirect to={ `/meals/${mealResults[0].idMeal}` } /> }
-      <Header name="meals" iconProfile iconSearch />
+      <Header name="Meals" type="meals" iconProfile iconSearch />
     </div>
   );
 }
