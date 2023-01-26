@@ -13,11 +13,11 @@ function Header(props) {
   const [pageType, setPageType] = useState('');
 
   useEffect(() => {
-    const { iconSearch, iconProfile, name } = props;
+    const { iconSearch, iconProfile, name, type } = props;
     setSearch(iconSearch);
     setProfile(iconProfile);
     setNameHeader(name);
-    setPageType(name);
+    setPageType(type);
   }, []);
 
   const ableInput = () => {
@@ -59,6 +59,7 @@ Header.propTypes = {
   name: PropTypes.string.isRequired,
   iconProfile: PropTypes.bool.isRequired,
   iconSearch: PropTypes.bool.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default Header;

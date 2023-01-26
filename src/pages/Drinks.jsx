@@ -9,7 +9,7 @@ function Drinks() {
     <div>
       { drinkResults.length === 1
         && <Redirect to={ `/drinks/${drinkResults[0].idDrink}` } /> }
-      <Header name="drinks" iconProfile iconSearch />
+      <Header name="Drinks" type="drinks" iconProfile iconSearch />
     </div>
   );
 }

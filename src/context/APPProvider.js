@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import ContextAPP from './ContextAPP';
-import { firstLetterMealAPI, ingredientMealAPI, nameMealAPI } from '../service/MealAPI';
-import { firstLetterDrinkAPI,
-  ingredientDrinkAPI, nameDrinkAPI } from '../service/DrinkAPI';
+import helperAPIMeal from '../helpers/helperAPIMeal';
+import helperAPIDrink from '../helpers/helperAPIDrink';
 
 export default function APPProvider({ children }) {
   const [radio, setRadio] = useState('ingredient');
@@ -16,32 +15,12 @@ export default function APPProvider({ children }) {
 
   const checkAndCallApi = async (page, type, input) => {
     if (page === 'meals') {
-      if (type === 'ingredient') {
-        const data = await ingredientMealAPI(input);
-        setMealResults(data);
-      }
-      if (type === 'name') {
-        const data = await nameMealAPI(input);
-        setMealResults(data);
-      }
-      if (type === 'first-letter') {
-        const data = await firstLetterMealAPI(input);
-        setMealResults(data);
-      }
+      const resultado = await helperAPIMeal(type, input);
+      setMealResults(resultado);
     }
     if (page === 'drinks') {
-      if (type === 'ingredient') {
-        const data = await ingredientDrinkAPI(input);
-        setDrinkResults(data);
-      }
-      if (type === 'name') {
-        const data = await nameDrinkAPI(input);
-        setDrinkResults(data);
-      }
-      if (type === 'first-letter') {
-        const data = await firstLetterDrinkAPI(input);
-        setDrinkResults(data);
-      }
+      const resultado = await helperAPIDrink(type, input);
+      setDrinkResults(resultado);
     }
   };
 
