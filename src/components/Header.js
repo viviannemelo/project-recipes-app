@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ProfileIcon from '../images/profileIcon.svg';
@@ -12,7 +12,7 @@ function Header(props) {
   const [showInput, setShowInput] = useState(false);
   const [pageType, setPageType] = useState('');
 
-  useState(() => {
+  useEffect(() => {
     const { iconSearch, iconProfile, name } = props;
     setSearch(iconSearch);
     setProfile(iconProfile);
