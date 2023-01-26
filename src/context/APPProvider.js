@@ -7,49 +7,51 @@ import { firstLetterDrinkAPI,
 
 export default function APPProvider({ children }) {
   const [radio, setRadio] = useState('ingredient');
-  const [results, setResults] = useState({});
+  const [mealResults, setMealResults] = useState([]);
+  const [drinkResults, setDrinkResults] = useState([]);
 
   const radioChange = ({ target: { value } }) => {
     setRadio(value);
   };
 
   const checkAndCallApi = async (page, type, input) => {
-    if (page === 'Meals') {
+    if (page === 'meals') {
       if (type === 'ingredient') {
         const data = await ingredientMealAPI(input);
-        setResults(data);
+        setMealResults(data);
       }
       if (type === 'name') {
         const data = await nameMealAPI(input);
-        setResults(data);
+        setMealResults(data);
       }
       if (type === 'first-letter') {
         const data = await firstLetterMealAPI(input);
-        setResults(data);
+        setMealResults(data);
       }
     }
-    if (page === 'Drinks') {
+    if (page === 'drinks') {
       if (type === 'ingredient') {
         const data = await ingredientDrinkAPI(input);
-        setResults(data);
+        setDrinkResults(data);
       }
       if (type === 'name') {
         const data = await nameDrinkAPI(input);
-        setResults(data);
+        setDrinkResults(data);
       }
       if (type === 'first-letter') {
         const data = await firstLetterDrinkAPI(input);
-        setResults(data);
+        setDrinkResults(data);
       }
     }
   };
 
   const values = useMemo(() => ({
     radio,
-    results,
+    mealResults,
+    drinkResults,
     radioChange,
     checkAndCallApi,
-  }), [radio, results]);
+  }), [radio, mealResults, drinkResults]);
   return (
     <ContextAPP.Provider value={ values }>
       {children}
