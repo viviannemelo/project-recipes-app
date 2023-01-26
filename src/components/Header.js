@@ -3,18 +3,21 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ProfileIcon from '../images/profileIcon.svg';
 import SearchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 function Header(props) {
   const [nameHeader, setNameHeader] = useState('');
   const [profile, setProfile] = useState(false);
   const [search, setSearch] = useState(false);
   const [showInput, setShowInput] = useState(false);
+  const [pageType, setPageType] = useState('');
 
   useState(() => {
     const { iconSearch, iconProfile, name } = props;
     setSearch(iconSearch);
     setProfile(iconProfile);
     setNameHeader(name);
+    setPageType(name);
   }, []);
 
   const ableInput = () => {
@@ -47,10 +50,7 @@ function Header(props) {
         </button>
       )}
       { showInput
-        && <input
-          data-testid="search-input"
-          type="text"
-        />}
+        && <SearchBar name={ pageType } />}
     </header>
   );
 }
