@@ -50,3 +50,11 @@ export const filterCategoryMeal = async (mealFilter) => {
   }
   return data.meals;
 };
+export const getMealsDetails = async (id) => {
+  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+  const data = await response.json();
+  if (data.meals === null) {
+    return [];
+  }
+  return data.meals;
+};
