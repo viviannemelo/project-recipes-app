@@ -3,20 +3,26 @@ import PropTypes from 'prop-types';
 import ContextAPP from './ContextAPP';
 import helperAPIMeal from '../helpers/helperAPIMeal';
 import helperAPIDrink from '../helpers/helperAPIDrink';
-import { initialMealAPI } from '../service/MealAPI';
-import { initialDrinkAPI } from '../service/DrinkAPI';
+import { categoryMealAPI, initialMealAPI } from '../service/MealAPI';
+import { categoryDrinkAPI, initialDrinkAPI } from '../service/DrinkAPI';
 
 export default function APPProvider({ children }) {
   const [radio, setRadio] = useState('ingredient');
   const [mealResults, setMealResults] = useState([]);
   const [drinkResults, setDrinkResults] = useState([]);
+  const [mealCatResults, setCategoryMealResults] = useState([]);
+  const [drinkCatResults, setCategoryDrinkResults] = useState([]);
 
   useEffect(() => {
     const fetchApi = async () => {
       const meal = await initialMealAPI();
       const drink = await initialDrinkAPI();
+      const mealCategories = await categoryMealAPI();
+      const drinkCategories = await categoryDrinkAPI();
       setMealResults(meal);
       setDrinkResults(drink);
+      setCategoryMealResults(mealCategories);
+      setCategoryDrinkResults(drinkCategories);
     };
 
     fetchApi();
@@ -43,7 +49,9 @@ export default function APPProvider({ children }) {
     drinkResults,
     radioChange,
     checkAndCallApi,
-  }), [radio, mealResults, drinkResults]);
+    mealCatResults,
+    drinkCatResults,
+  }), [radio, mealResults, drinkResults, mealCatResults, drinkCatResults]);
   return (
     <ContextAPP.Provider value={ values }>
       {children}

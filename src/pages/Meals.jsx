@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Recipes from '../components/Recipes';
 import ContextAPP from '../context/ContextAPP';
@@ -12,6 +13,7 @@ function Meals() {
         && <Redirect to={ `/meals/${mealResults[0].idMeal}` } /> }
       <Header name="Meals" type="meals" iconProfile iconSearch />
       <Recipes name="meal" />
+      <Footer />
     </div>
   );
 }

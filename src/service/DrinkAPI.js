@@ -33,3 +33,11 @@ export const firstLetterDrinkAPI = async (primeiraLetra) => {
   }
   return data.drinks;
 };
+export const categoryDrinkAPI = async () => {
+  const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
+  const data = await response.json();
+  if (data.meals === null) {
+    return [];
+  }
+  return data.drinks;
+};

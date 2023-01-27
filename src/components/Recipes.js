@@ -3,23 +3,42 @@ import PropTypes from 'prop-types';
 import ContextAPP from '../context/ContextAPP';
 
 function Recipes(props) {
-  const { mealResults, drinkResults } = useContext(ContextAPP);
+  const { mealResults, drinkResults,
+    mealCatResults, drinkCatResults } = useContext(ContextAPP);
   const [results, setResults] = useState([]);
+  const [resultsCategories, setResultsCategories] = useState([]);
 
-  console.log(mealResults);
+  console.log(resultsCategories);
 
   useEffect(() => {
     const { name } = props;
     if (name === 'meal') {
       setResults(mealResults);
+      setResultsCategories(mealCatResults);
     }
     if (name === 'drink') {
       setResults(drinkResults);
+      setResultsCategories(drinkCatResults);
     }
-  }, [mealResults, drinkResults]);
+  }, [mealResults, drinkResults, mealCatResults, drinkCatResults]);
 
   return (
     <div className="Card">
+      {
+        resultsCategories.map((categories, index) => {
+          if (index > Number('4')) {
+            return;
+          }
+          return (
+            <button
+              key={ categories.strCategory }
+              data-testid={ `${categories.strCategory}-category-filter` }
+            >
+              {categories.strCategory}
+            </button>
+          );
+        })
+      }
       {
         results.map((result, index) => {
           if (index > Number('11')) {
