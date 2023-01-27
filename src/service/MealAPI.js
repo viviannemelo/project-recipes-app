@@ -33,3 +33,12 @@ export const firstLetterMealAPI = async (primeiraLetra) => {
   }
   return data.meals;
 };
+
+export const categoryMealAPI = async () => {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+  const data = await response.json();
+  if (data.meals === null) {
+    return [];
+  }
+  return data.meals;
+};
