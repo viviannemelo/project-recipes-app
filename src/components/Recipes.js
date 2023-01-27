@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import ContextAPP from '../context/ContextAPP';
 import { filterCategoryMeal } from '../service/MealAPI';
 import { filterDrinkAPI } from '../service/DrinkAPI';
@@ -87,10 +88,16 @@ function Recipes(props) {
           if (index > Number('11')) {
             return;
           }
+          const id = result.idDrink || result.idMeal;
           const item = result.strMeal || result.strDrink;
           const image = result.strMealThumb || result.strDrinkThumb;
+          const { name } = props;
           return (
-            <div key={ index } data-testid={ `${index}-recipe-card` }>
+            <Link
+              to={ `/${name}s/${id}` }
+              key={ index }
+              data-testid={ `${index}-recipe-card` }
+            >
               <div>
                 <img
                   data-testid={ `${index}-card-img` }
@@ -102,7 +109,7 @@ function Recipes(props) {
                   { item }
                 </h6>
               </div>
-            </div>
+            </Link>
           );
         })
       }
