@@ -41,3 +41,11 @@ export const categoryDrinkAPI = async () => {
   }
   return data.drinks;
 };
+export const filterDrinkAPI = async (drinkFilter) => {
+  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${drinkFilter}`);
+  const data = await response.json();
+  if (data.meals === null) {
+    return [];
+  }
+  return data.drinks;
+};

@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ContextAPP from '../context/ContextAPP';
+import { filterCategoryMeal } from '../service/MealAPI';
+import { filterDrinkAPI } from '../service/DrinkAPI';
 
 function Recipes(props) {
   const { mealResults, drinkResults,
@@ -8,7 +10,30 @@ function Recipes(props) {
   const [results, setResults] = useState([]);
   const [resultsCategories, setResultsCategories] = useState([]);
 
-  console.log(resultsCategories);
+  console.log(results);
+  const onHandleFilter = async (event) => {
+    const { name } = props;
+    if (name === 'meal') {
+      console.log(event.target.value);
+      const mealValue = await filterCategoryMeal(event.target.value);
+      console.log(mealValue);
+      setResults(mealValue);
+    }
+    if (name === 'drink') {
+      console.log(event.target.value);
+      const drinkValue = await filterDrinkAPI(event.target.value);
+      setResults(drinkValue);
+    }
+  };
+  const onRemoveFilter = () => {
+    const { name } = props;
+    if (name === 'meal') {
+      setResults(mealResults);
+    }
+    if (name === 'drink') {
+      setResults(drinkResults);
+    }
+  };
 
   useEffect(() => {
     const { name } = props;
@@ -33,12 +58,21 @@ function Recipes(props) {
             <button
               key={ categories.strCategory }
               data-testid={ `${categories.strCategory}-category-filter` }
+              value={ categories.strCategory }
+              onClick={ onHandleFilter }
             >
               {categories.strCategory}
             </button>
           );
         })
       }
+      <button
+        onClick={ onRemoveFilter }
+        data-testid="All-category-filter"
+      >
+        Remove All filters
+
+      </button>
       {
         results.map((result, index) => {
           if (index > Number('11')) {
