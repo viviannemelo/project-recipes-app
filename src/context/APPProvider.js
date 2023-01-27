@@ -1,13 +1,26 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import ContextAPP from './ContextAPP';
 import helperAPIMeal from '../helpers/helperAPIMeal';
 import helperAPIDrink from '../helpers/helperAPIDrink';
+import { initialMealAPI } from '../service/MealAPI';
+import { initialDrinkAPI } from '../service/DrinkAPI';
 
 export default function APPProvider({ children }) {
   const [radio, setRadio] = useState('ingredient');
   const [mealResults, setMealResults] = useState([]);
   const [drinkResults, setDrinkResults] = useState([]);
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      const meal = await initialMealAPI();
+      const drink = await initialDrinkAPI();
+      setMealResults(meal);
+      setDrinkResults(drink);
+    };
+
+    fetchApi();
+  }, []);
 
   const radioChange = ({ target: { value } }) => {
     setRadio(value);

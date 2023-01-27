@@ -1,3 +1,12 @@
+export const initialMealAPI = async () => {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+  const data = await response.json();
+  if (data.meals === null) {
+    return [];
+  }
+  return data.meals;
+};
+
 export const ingredientMealAPI = async (ingrediente) => {
   const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`);
   const data = await response.json();
