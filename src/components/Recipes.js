@@ -9,20 +9,29 @@ function Recipes(props) {
     mealCatResults, drinkCatResults } = useContext(ContextAPP);
   const [results, setResults] = useState([]);
   const [resultsCategories, setResultsCategories] = useState([]);
+  const [filterClicked, setFilterClicked] = useState('');
 
   console.log(results);
   const onHandleFilter = async (event) => {
     const { name } = props;
     if (name === 'meal') {
-      console.log(event.target.value);
+      if (filterClicked === event.target.value) {
+        setResults(mealResults);
+        return setFilterClicked('');
+      }
       const mealValue = await filterCategoryMeal(event.target.value);
-      console.log(mealValue);
       setResults(mealValue);
+      return setFilterClicked(event.target.value);
     }
     if (name === 'drink') {
-      console.log(event.target.value);
+      if (filterClicked === event.target.value) {
+        console.log(event.target.value);
+        setResults(drinkResults);
+        return setFilterClicked('');
+      }
       const drinkValue = await filterDrinkAPI(event.target.value);
       setResults(drinkValue);
+      return setFilterClicked(event.target.value);
     }
   };
   const onRemoveFilter = () => {
@@ -87,7 +96,7 @@ function Recipes(props) {
                   data-testid={ `${index}-card-img` }
                   src={ image }
                   alt={ item }
-                  height="70px"
+                  height="60px"
                 />
                 <h6 data-testid={ `${index}-card-name` }>
                   { item }
