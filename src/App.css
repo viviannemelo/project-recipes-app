@@ -10,6 +10,11 @@
   width: 100%;
 }
 
+.Card {
+  display: flex;
+  flex-flow: row wrap;
+}
+
 .rocksGlass {
   animation: shake 1s infinite ease;
   max-height: 80vh;
