@@ -18,5 +18,5 @@ export default function LoginProvider({ children }) {
   );
 }
 LoginProvider.propTypes = {
-  children: PropTypes.oneOfType.isRequired,
+  children: PropTypes.node.isRequired,
 };

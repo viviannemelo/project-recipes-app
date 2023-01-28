@@ -6,6 +6,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import LoginProvider from './context/LoginProvider';
 import APPProvider from './context/APPProvider';
+import RecipeProvider from './context/RecipeProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
@@ -13,7 +14,9 @@ ReactDOM
     <BrowserRouter>
       <LoginProvider>
         <APPProvider>
-          <App />
+          <RecipeProvider>
+            <App />
+          </RecipeProvider>
         </APPProvider>
       </LoginProvider>
     </BrowserRouter>,
