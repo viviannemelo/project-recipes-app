@@ -7,7 +7,18 @@ const NUMBER_THIRTY_TWO = 32;
 
 function Recipe(props) {
   const { data,
-    fetchRecipe, ready, itsMeal, recomendations } = useContext(ContextRecipe);
+    fetchRecipe, ready, itsMeal, recomendations,
+    localStorageSetUp, isButtonHidden, dataConstruction } = useContext(ContextRecipe);
+  useEffect(() => {
+    const {
+      match: {
+        params: { id },
+      },
+    } = props;
+    if (ready) {
+      localStorageSetUp(id, dataConstruction(data[0]));
+    }
+  }, [data, isButtonHidden]);
   useEffect(() => {
     const {
       match: {
@@ -18,6 +29,9 @@ function Recipe(props) {
       await fetchRecipe(name, id);
     };
     fetchResult();
+    // if (ready) {
+    //   localStorageSetUp(id, dataConstruction(data[0]));
+    // }
   }, []);
 
   const urlToEmbedUrl = (url) => `https://www.youtube.com/embed/${url.slice(NUMBER_THIRTY_TWO)}`;
@@ -36,7 +50,7 @@ function Recipe(props) {
     }));
   };
 
-  console.log(recomendations);
+  console.log(data);
 
   return (
     <div>
@@ -109,13 +123,18 @@ function Recipe(props) {
           );
         })}
       </Carousel>
-      <button
-        className="start"
-        type="button"
-        data-testid="start-recipe-btn"
-      >
-        Start Recipe
-      </button>
+      {
+        !isButtonHidden
+       && (
+         <button
+           className="start"
+           type="button"
+           data-testid="start-recipe-btn"
+         >
+           Start Recipe
+         </button>
+       )
+      }
     </div>
   );
 }
