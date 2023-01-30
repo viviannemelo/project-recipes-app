@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Carousel } from 'react-bootstrap';
 import ContextRecipe from '../context/ContextRecipe';
 
 const NUMBER_THIRTY_TWO = 32;
 
 function Recipe(props) {
-  const { data, fetchRecipe, ready, itsMeal } = useContext(ContextRecipe);
+  const { data,
+    fetchRecipe, ready, itsMeal, recomendations } = useContext(ContextRecipe);
   useEffect(() => {
     const {
       match: {
@@ -33,6 +35,8 @@ function Recipe(props) {
       measure: measure[index][1],
     }));
   };
+
+  console.log(recomendations);
 
   return (
     <div>
@@ -80,6 +84,38 @@ function Recipe(props) {
             />
           </div>
         )}
+      <Carousel>
+        { recomendations.map((recomendation, index) => {
+          if (index > Number('3')) {
+            return;
+          }
+          return (
+            <Carousel.Item key={ `recipe ${index}` }>
+              {recomendation.map((recipe) => {
+                const item = recipe.strMeal || recipe.strDrink;
+                const image = recipe.strMealThumb || recipe.strDrinkThumb;
+                const { id } = recipe;
+                return (
+                  <div
+                    key={ id }
+                    data-testid={ `${id}-recommendation-card` }
+                  >
+                    <img src={ image } alt="Imagem" height="120px" />
+                    <p data-testid={ `${id}-recommendation-title` }>{item}</p>
+                  </div>
+                );
+              })}
+            </Carousel.Item>
+          );
+        })}
+      </Carousel>
+      <button
+        className="start"
+        type="button"
+        data-testid="start-recipe-btn"
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }
