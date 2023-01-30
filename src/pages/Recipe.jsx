@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Carousel } from 'react-bootstrap';
 import ContextRecipe from '../context/ContextRecipe';
@@ -9,6 +9,7 @@ function Recipe(props) {
   const { data,
     fetchRecipe, ready, itsMeal, recomendations,
     localStorageSetUp, isButtonHidden, dataConstruction } = useContext(ContextRecipe);
+  const [BtnContinue, setContinue] = useState('Continue Recipe');
   useEffect(() => {
     const {
       match: {
@@ -48,6 +49,43 @@ function Recipe(props) {
       ingredient: i[1],
       measure: measure[index][1],
     }));
+  };
+  const startRecipe = () => {
+    const {
+      match: {
+        params: { id },
+      }, name,
+    } = props;
+    const S = 's';
+    const changeName = name + S;
+    const ingredient = getIngredients('strIngredient');
+    const obj = {
+      drinks: {},
+      meals: {},
+    };
+    obj[changeName] = {
+      [id]: Object.keys(ingredient).map((el, i) => (
+        i
+      )),
+
+    };
+    Object.keys(ingredient).map((el, i) => (
+      i
+    ));
+    const getItem = JSON.parse(localStorage.getItem('inProgressRecipes'));
+
+    if (getItem) {
+      const obj2 = getItem;
+
+      obj2[changeName][id] = Object.keys(ingredient).map((el, i) => (
+        i
+      ));
+      localStorage.setItem('inProgressRecipes', JSON.stringify(obj2));
+      setContinue('Continue Recipe');
+    } else {
+      localStorage.setItem('inProgressRecipes', JSON.stringify(obj));
+      setContinue('Continue Recipe');
+    }
   };
 
   console.log(data);
@@ -130,8 +168,10 @@ function Recipe(props) {
            className="start"
            type="button"
            data-testid="start-recipe-btn"
+           onClick={ startRecipe }
+           value="Start Recipe"
          >
-           Start Recipe
+           {BtnContinue}
          </button>
        )
       }
