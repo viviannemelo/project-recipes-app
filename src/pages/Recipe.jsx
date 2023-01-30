@@ -4,12 +4,13 @@ import { Carousel } from 'react-bootstrap';
 import ContextRecipe from '../context/ContextRecipe';
 
 const NUMBER_THIRTY_TWO = 32;
+const CONTINUE_RECIPE = 'Continue Recipe';
 
 function Recipe(props) {
   const { data,
     fetchRecipe, ready, itsMeal, recomendations,
     localStorageSetUp, isButtonHidden, dataConstruction } = useContext(ContextRecipe);
-  const [BtnContinue, setContinue] = useState('Continue Recipe');
+  const [BtnContinue, setContinue] = useState(CONTINUE_RECIPE);
   useEffect(() => {
     const {
       match: {
@@ -81,10 +82,10 @@ function Recipe(props) {
         i
       ));
       localStorage.setItem('inProgressRecipes', JSON.stringify(obj2));
-      setContinue('Continue Recipe');
+      setContinue(CONTINUE_RECIPE);
     } else {
       localStorage.setItem('inProgressRecipes', JSON.stringify(obj));
-      setContinue('Continue Recipe');
+      setContinue(CONTINUE_RECIPE);
     }
   };
 
