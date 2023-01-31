@@ -15,6 +15,19 @@ export default function RecipeProvider({ children }) {
   const [ready, setReady] = useState(false);
   const [itsMeal, setItsMeal] = useState(false);
   const [isButtonHidden, setButtonHidden] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+
+  const checkFavorite = (id) => {
+    const getItem = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (getItem) {
+      const takeItem = getItem.find((el) => (el.id === id));
+      if (takeItem) {
+        setIsFavorited(true);
+      } else {
+        setIsFavorited(false);
+      }
+    }
+  };
 
   const dataConstruction = (objInfo) => {
     // const getType = Object.keys(data)[0].slice(2).toLowerCase();
@@ -35,6 +48,41 @@ export default function RecipeProvider({ children }) {
     };
     console.log(obj);
     return obj;
+  };
+
+  const dataForFavorite = (objInfo) => {
+    const THREE = 3;
+    const obj = {
+      id: objInfo.idMeal || objInfo.idDrink,
+      type: (Object.keys(objInfo)[1]).slice(THREE).toLowerCase(),
+      nationality: objInfo.strArea || '',
+      category: objInfo.strCategory || '',
+      alcoholicOrNot: objInfo.strAlcoholic || '',
+      name: objInfo.strDrink || objInfo.strMeal,
+      image: objInfo.strMealThumb || objInfo.strDrinkThumb,
+    };
+    console.log(obj);
+    return obj;
+  };
+
+  const favoriteRecipe = (id) => {
+    const getItem = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (getItem) {
+      const takeItem = getItem.find((el) => (el.id === id));
+      if (takeItem) {
+        const removeFavorite = getItem.filter((el) => (el.id !== id));
+        localStorage.setItem('favoriteRecipes', JSON.stringify(removeFavorite));
+        setIsFavorited(false);
+      } else {
+        const concatItem = getItem.concat(dataForFavorite(data[0]));
+        localStorage.setItem('favoriteRecipes', JSON.stringify(concatItem));
+        setIsFavorited(true);
+      }
+    } else {
+      localStorage
+        .setItem('favoriteRecipes', JSON.stringify([dataForFavorite(data[0])]));
+      setIsFavorited(true);
+    }
   };
 
   const localStorageSetUp = (id, getData) => {
@@ -99,11 +147,14 @@ export default function RecipeProvider({ children }) {
     ready,
     itsMeal,
     recomendations,
+    isFavorited,
     fetchRecipe,
     localStorageSetUp,
     isButtonHidden,
     dataConstruction,
-  }), [data, ready, itsMeal, recomendations, isButtonHidden]);
+    favoriteRecipe,
+    checkFavorite,
+  }), [data, ready, itsMeal, recomendations, isButtonHidden, isFavorited]);
   return (
     <ContextRecipe.Provider value={ values }>
       {children}

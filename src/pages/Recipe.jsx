@@ -1,39 +1,41 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import copy from 'clipboard-copy';
 import { Carousel } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import ContextRecipe from '../context/ContextRecipe';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const NUMBER_THIRTY_TWO = 32;
 const CONTINUE_RECIPE = 'Continue Recipe';
 
 function Recipe(props) {
-  const { data,
+  const location = useLocation();
+  const {
+    match: {
+      params: { id },
+    }, name, history,
+  } = props;
+
+  const { data, checkFavorite, isFavorited,
     fetchRecipe, ready, itsMeal, recomendations,
-    localStorageSetUp, isButtonHidden, dataConstruction } = useContext(ContextRecipe);
+    localStorageSetUp, isButtonHidden, dataConstruction,
+    favoriteRecipe } = useContext(ContextRecipe);
   const [BtnContinue, setContinue] = useState(CONTINUE_RECIPE);
+  const [copied, setCopied] = useState(false);
   useEffect(() => {
-    const {
-      match: {
-        params: { id },
-      },
-    } = props;
     if (ready) {
       localStorageSetUp(id, dataConstruction(data[0]));
     }
   }, [data, isButtonHidden]);
   useEffect(() => {
-    const {
-      match: {
-        params: { id },
-      }, name,
-    } = props;
     const fetchResult = async () => {
       await fetchRecipe(name, id);
     };
     fetchResult();
-    // if (ready) {
-    //   localStorageSetUp(id, dataConstruction(data[0]));
-    // }
+    checkFavorite(id);
   }, []);
 
   const urlToEmbedUrl = (url) => `https://www.youtube.com/embed/${url.slice(NUMBER_THIRTY_TWO)}`;
@@ -52,11 +54,6 @@ function Recipe(props) {
     }));
   };
   const startRecipe = () => {
-    const {
-      match: {
-        params: { id },
-      }, name,
-    } = props;
     const S = 's';
     const changeName = name + S;
     const ingredient = getIngredients('strIngredient');
@@ -87,6 +84,17 @@ function Recipe(props) {
       localStorage.setItem('inProgressRecipes', JSON.stringify(obj));
       setContinue(CONTINUE_RECIPE);
     }
+    history.push(`/${changeName}/${id}/in-progress`);
+  };
+
+  const handleCopy = () => {
+    copy(`http://localhost:3000${location.pathname}`);
+
+    setCopied(true);
+  };
+
+  const handleFavorited = () => {
+    favoriteRecipe(id);
   };
 
   console.log(data);
@@ -125,6 +133,19 @@ function Recipe(props) {
             </p>
           </div>
         )}
+      <div className="share-favorite">
+        <button data-testid="share-btn" onClick={ handleCopy }>
+          <img src={ shareIcon } alt="Share" />
+        </button>
+        { copied && <p>Link copied!</p>}
+        <button
+          data-testid="favorite-btn"
+          onClick={ handleFavorited }
+          src={ isFavorited ? blackHeartIcon : whiteHeartIcon }
+        >
+          <img src={ isFavorited ? blackHeartIcon : whiteHeartIcon } alt="Favorite" />
+        </button>
+      </div>
       { ready && itsMeal
         && (
           <div>
@@ -147,14 +168,14 @@ function Recipe(props) {
               {recomendation.map((recipe) => {
                 const item = recipe.strMeal || recipe.strDrink;
                 const image = recipe.strMealThumb || recipe.strDrinkThumb;
-                const { id } = recipe;
+                const { id: identidade } = recipe;
                 return (
                   <div
-                    key={ id }
-                    data-testid={ `${id}-recommendation-card` }
+                    key={ identidade }
+                    data-testid={ `${identidade}-recommendation-card` }
                   >
                     <img src={ image } alt="Imagem" height="120px" />
-                    <p data-testid={ `${id}-recommendation-title` }>{item}</p>
+                    <p data-testid={ `${identidade}-recommendation-title` }>{item}</p>
                   </div>
                 );
               })}
@@ -185,6 +206,9 @@ Recipe.propTypes = {
     params: PropTypes.shape({
       id: PropTypes.string,
     }),
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
