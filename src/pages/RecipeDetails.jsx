@@ -50,7 +50,7 @@ function Recipe(props) {
 
     return ingredient.map((i, index) => ({
       ingredient: i[1],
-      measure: measure[index][1],
+      measure: measure[index] ? measure[index][1] : '',
     }));
   };
   const startRecipe = () => {
@@ -84,7 +84,7 @@ function Recipe(props) {
       localStorage.setItem('inProgressRecipes', JSON.stringify(obj));
       setContinue(CONTINUE_RECIPE);
     }
-    history.push(`/${changeName}/${id}/in-progress`);
+    history.push(`/${name}/${id}/in-progress`);
   };
 
   const handleCopy = () => {

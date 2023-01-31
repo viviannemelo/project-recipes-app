@@ -103,7 +103,7 @@ export default function RecipeProvider({ children }) {
   };
 
   const fetchRecipe = async (type, id) => {
-    if (type === 'meal') {
+    if (type === 'meals') {
       const meals = await getMealsDetails(id);
       const drink = await initialDrinkAPI();
       const drinkWithID = drink.map((receita, index) => {
@@ -122,7 +122,7 @@ export default function RecipeProvider({ children }) {
         drinkWithID.slice(FOUR, SIX),
       ]);
     }
-    if (type === 'drink') {
+    if (type === 'drinks') {
       const drinks = await getDrinkDetails(id);
       const meal = await initialMealAPI();
       const mealWithID = meal.map((receita, index) => {
