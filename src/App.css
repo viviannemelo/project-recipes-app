@@ -20,6 +20,11 @@
   max-height: 80vh;
 }
 
+.share-favorite {
+  display: flex;
+  justify-content: center;
+}
+
 .start {
   bottom: 0;
   position: fixed;
