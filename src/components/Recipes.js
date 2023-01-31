@@ -103,11 +103,11 @@ function Recipes(props) {
                   data-testid={ `${index}-card-img` }
                   src={ image }
                   alt={ item }
-                  height="60px"
+                  height="40px"
                 />
-                <h6 data-testid={ `${index}-card-name` }>
+                <p data-testid={ `${index}-card-name` }>
                   { item }
-                </h6>
+                </p>
               </div>
             </Link>
           );
