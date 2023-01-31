@@ -1,13 +1,26 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Carousel } from 'react-bootstrap';
 import ContextRecipe from '../context/ContextRecipe';
 
 const NUMBER_THIRTY_TWO = 32;
+const CONTINUE_RECIPE = 'Continue Recipe';
 
 function Recipe(props) {
   const { data,
-    fetchRecipe, ready, itsMeal, recomendations } = useContext(ContextRecipe);
+    fetchRecipe, ready, itsMeal, recomendations,
+    localStorageSetUp, isButtonHidden, dataConstruction } = useContext(ContextRecipe);
+  const [BtnContinue, setContinue] = useState(CONTINUE_RECIPE);
+  useEffect(() => {
+    const {
+      match: {
+        params: { id },
+      },
+    } = props;
+    if (ready) {
+      localStorageSetUp(id, dataConstruction(data[0]));
+    }
+  }, [data, isButtonHidden]);
   useEffect(() => {
     const {
       match: {
@@ -18,6 +31,9 @@ function Recipe(props) {
       await fetchRecipe(name, id);
     };
     fetchResult();
+    // if (ready) {
+    //   localStorageSetUp(id, dataConstruction(data[0]));
+    // }
   }, []);
 
   const urlToEmbedUrl = (url) => `https://www.youtube.com/embed/${url.slice(NUMBER_THIRTY_TWO)}`;
@@ -35,8 +51,45 @@ function Recipe(props) {
       measure: measure[index][1],
     }));
   };
+  const startRecipe = () => {
+    const {
+      match: {
+        params: { id },
+      }, name,
+    } = props;
+    const S = 's';
+    const changeName = name + S;
+    const ingredient = getIngredients('strIngredient');
+    const obj = {
+      drinks: {},
+      meals: {},
+    };
+    obj[changeName] = {
+      [id]: Object.keys(ingredient).map((el, i) => (
+        i
+      )),
 
-  console.log(recomendations);
+    };
+    Object.keys(ingredient).map((el, i) => (
+      i
+    ));
+    const getItem = JSON.parse(localStorage.getItem('inProgressRecipes'));
+
+    if (getItem) {
+      const obj2 = getItem;
+
+      obj2[changeName][id] = Object.keys(ingredient).map((el, i) => (
+        i
+      ));
+      localStorage.setItem('inProgressRecipes', JSON.stringify(obj2));
+      setContinue(CONTINUE_RECIPE);
+    } else {
+      localStorage.setItem('inProgressRecipes', JSON.stringify(obj));
+      setContinue(CONTINUE_RECIPE);
+    }
+  };
+
+  console.log(data);
 
   return (
     <div>
@@ -109,13 +162,20 @@ function Recipe(props) {
           );
         })}
       </Carousel>
-      <button
-        className="start"
-        type="button"
-        data-testid="start-recipe-btn"
-      >
-        Start Recipe
-      </button>
+      {
+        !isButtonHidden
+       && (
+         <button
+           className="start"
+           type="button"
+           data-testid="start-recipe-btn"
+           onClick={ startRecipe }
+           value="Start Recipe"
+         >
+           {BtnContinue}
+         </button>
+       )
+      }
     </div>
   );
 }
