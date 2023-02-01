@@ -54,16 +54,15 @@ function Recipe(props) {
     }));
   };
   const startRecipe = () => {
-    const S = 's';
-    const changeName = name + S;
+    const changeName = name;
     const ingredient = getIngredients('strIngredient');
     const obj = {
       drinks: {},
       meals: {},
     };
     obj[changeName] = {
-      [id]: Object.keys(ingredient).map((el, i) => (
-        i
+      [id]: Object.values(ingredient).map((el) => (
+        el[1]
       )),
 
     };
@@ -75,8 +74,8 @@ function Recipe(props) {
     if (getItem) {
       const obj2 = getItem;
 
-      obj2[changeName][id] = Object.keys(ingredient).map((el, i) => (
-        i
+      obj2[changeName][id] = Object.values(ingredient).map((el) => (
+        el[1]
       ));
       localStorage.setItem('inProgressRecipes', JSON.stringify(obj2));
       setContinue(CONTINUE_RECIPE);
@@ -96,8 +95,6 @@ function Recipe(props) {
   const handleFavorited = () => {
     favoriteRecipe(id);
   };
-
-  console.log(data);
 
   return (
     <div>

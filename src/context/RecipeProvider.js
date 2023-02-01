@@ -32,7 +32,6 @@ export default function RecipeProvider({ children }) {
   const dataConstruction = (objInfo) => {
     // const getType = Object.keys(data)[0].slice(2).toLowerCase();
     const date = new Date();
-    console.log(objInfo);
     const THREE = 3;
 
     const obj = {
@@ -46,7 +45,6 @@ export default function RecipeProvider({ children }) {
       doneDate: date,
       tags: objInfo.strTags || [],
     };
-    console.log(obj);
     return obj;
   };
 
@@ -61,7 +59,6 @@ export default function RecipeProvider({ children }) {
       name: objInfo.strDrink || objInfo.strMeal,
       image: objInfo.strMealThumb || objInfo.strDrinkThumb,
     };
-    console.log(obj);
     return obj;
   };
 
@@ -87,7 +84,6 @@ export default function RecipeProvider({ children }) {
 
   const localStorageSetUp = (id, getData) => {
     const getItem = JSON.parse(localStorage.getItem('doneRecipes'));
-    console.log(getItem);
     if (getItem) {
       const takeItem = getItem.find((el) => (el.id === id));
       if (takeItem) {

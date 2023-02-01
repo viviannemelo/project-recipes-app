@@ -12,7 +12,6 @@ function Recipes(props) {
   const [resultsCategories, setResultsCategories] = useState([]);
   const [filterClicked, setFilterClicked] = useState('');
 
-  console.log(results);
   const onHandleFilter = async (event) => {
     const { name } = props;
     if (name === 'meal') {
@@ -26,7 +25,6 @@ function Recipes(props) {
     }
     if (name === 'drink') {
       if (filterClicked === event.target.value) {
-        console.log(event.target.value);
         setResults(drinkResults);
         return setFilterClicked('');
       }
