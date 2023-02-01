@@ -9,6 +9,7 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 function InProgress() {
   const history = useHistory();
   const [copied, setCopied] = useState(false);
+  const [checked, setChecked] = useState({});
   const id = history.location.pathname.split('/')[2];
   const type = history.location.pathname.split('/')[1];
   const { data, checkFavorite, ready, itsMeal,
@@ -21,6 +22,28 @@ function InProgress() {
     fetchResult();
     checkFavorite(id);
   }, []);
+
+  const getIngredients = (propriedade) => Object.entries(data[0])
+    .filter((str) => str[0].includes(propriedade))
+    .filter((str) => str[1]);
+
+  const ingredientAndMeasure = () => {
+    const measure = getIngredients('strMeasure');
+    const ingredient = getIngredients('strIngredient');
+
+    return ingredient.map((i, index) => ({
+      ingredient: i[1],
+      measure: measure[index] ? measure[index][1] : '',
+    }));
+  };
+
+  const handleCheck = (e) => {
+    const obj = {
+      ...checked,
+      [e.target.name]: e.target.checked,
+    };
+    setChecked(obj);
+  };
 
   const handleCopy = () => {
     copy(`http://localhost:3000/${type}/${id}`);
@@ -45,8 +68,29 @@ function InProgress() {
               data-testid="recipe-photo"
               src={ data[0].strMealThumb || data[0].strDrinkThumb }
               alt={ data[0].strDrink || data[0].strMeal }
-              height="150px"
+              height="80px"
             />
+            <form>
+              {
+                ingredientAndMeasure().map(({ ingredient, measure }, index) => (
+                  <div key={ index }>
+                    <label
+                      data-testid={ `${index}-ingredient-step` }
+                      htmlFor={ `${index}-ingredient-step` }
+                      className={ checked[ingredient] ? 'underlined' : undefined }
+                    >
+                      <input
+                        type="checkbox"
+                        name={ ingredient }
+                        onChange={ handleCheck }
+                        checked={ checked[ingredient] || false }
+                      />
+                      { `${ingredient} ${measure}` }
+                    </label>
+                  </div>
+                ))
+              }
+            </form>
             <h3 data-testid="recipe-category">
               {itsMeal === true ? data[0].strCategory : data[0].strAlcoholic}
             </h3>

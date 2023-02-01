@@ -25,6 +25,10 @@
   justify-content: center;
 }
 
+.underlined {
+  text-decoration: line-through solid black;
+}
+
 .start {
   bottom: 0;
   position: fixed;
