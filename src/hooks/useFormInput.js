@@ -9,9 +9,7 @@ export default function useFormInput() {
   const [isButtonDisable, setButtonState] = useState(false);
 
   const validateButton = (values) => {
-    console.log('Validando');
     const { email, password } = values;
-    console.log(values);
     const checkEmail = validateEmail(email);
     const checkPass = validatePassword(password);
     return (checkEmail && checkPass)

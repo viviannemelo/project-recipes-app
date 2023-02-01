@@ -21,6 +21,10 @@ function InProgress() {
     };
     fetchResult();
     checkFavorite(id);
+    const getItem = JSON.parse(localStorage.getItem(id));
+    if (getItem) {
+      setChecked(getItem);
+    }
   }, []);
 
   const getIngredients = (propriedade) => Object.entries(data[0])
@@ -43,6 +47,12 @@ function InProgress() {
       [e.target.name]: e.target.checked,
     };
     setChecked(obj);
+    const getItem = JSON.parse(localStorage.getItem(id));
+    if (getItem) {
+      localStorage.setItem(id, JSON.stringify(obj));
+    } else {
+      localStorage.setItem(id, JSON.stringify(obj));
+    }
   };
 
   const handleCopy = () => {
