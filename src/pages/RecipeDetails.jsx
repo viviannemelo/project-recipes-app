@@ -21,15 +21,15 @@ function Recipe(props) {
 
   const { data, checkFavorite, isFavorited,
     fetchRecipe, ready, itsMeal, recomendations,
-    localStorageSetUp, isButtonHidden, dataConstruction,
+    /* localStorageSetUp */ isButtonHidden, /* dataConstruction, */
     favoriteRecipe } = useContext(ContextRecipe);
   const [BtnContinue, setContinue] = useState(CONTINUE_RECIPE);
   const [copied, setCopied] = useState(false);
-  useEffect(() => {
+  /*   useEffect(() => {
     if (ready) {
       localStorageSetUp(id, dataConstruction(data[0]));
     }
-  }, [data, isButtonHidden]);
+  }, [data, isButtonHidden]); */
   useEffect(() => {
     const fetchResult = async () => {
       await fetchRecipe(name, id);

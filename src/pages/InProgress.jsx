@@ -10,10 +10,12 @@ function InProgress() {
   const history = useHistory();
   const [copied, setCopied] = useState(false);
   const [checked, setChecked] = useState({});
+  const [disabled, setDisabled] = useState(true);
   const id = history.location.pathname.split('/')[2];
   const type = history.location.pathname.split('/')[1];
-  const { data, checkFavorite, ready, itsMeal,
-    isFavorited, favoriteRecipe, fetchRecipe } = useContext(ContextRecipe);
+  const { data, checkFavorite, ready, itsMeal, quantity, localStorageSetUp,
+    dataConstruction, isFavorited, favoriteRecipe,
+    fetchRecipe } = useContext(ContextRecipe);
 
   useEffect(() => {
     const fetchResult = async () => {
@@ -25,11 +27,26 @@ function InProgress() {
     if (getItem) {
       setChecked(getItem);
     }
+    setDisabled(true);
   }, []);
 
   const getIngredients = (propriedade) => Object.entries(data[0])
     .filter((str) => str[0].includes(propriedade))
     .filter((str) => str[1]);
+
+  useEffect(() => {
+    if (checked !== null || checked !== undefined) {
+      const values = Object.values(checked);
+      console.log(values.length);
+      console.log(quantity);
+      setDisabled(true);
+      if (values.length === quantity) {
+        const every = values.some((value) => (value === false));
+        console.log(every);
+        setDisabled(every);
+      }
+    }
+  }, [checked]);
 
   const ingredientAndMeasure = () => {
     const measure = getIngredients('strMeasure');
@@ -63,6 +80,11 @@ function InProgress() {
 
   const handleFavorited = () => {
     favoriteRecipe(id);
+  };
+
+  const handleFinished = () => {
+    localStorageSetUp(id, dataConstruction(data[0]));
+    history.push('/done-recipes');
   };
 
   return (
@@ -126,6 +148,8 @@ function InProgress() {
         <button
           data-testid="finish-recipe-btn"
           type="button"
+          disabled={ disabled }
+          onClick={ handleFinished }
         >
           Finalizar
         </button>
