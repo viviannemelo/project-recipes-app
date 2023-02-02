@@ -16,6 +16,7 @@ export default function RecipeProvider({ children }) {
   const [itsMeal, setItsMeal] = useState(false);
   const [isButtonHidden, setButtonHidden] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
+  const [quantity, setQuantity] = useState(0);
 
   const checkFavorite = (id) => {
     const getItem = JSON.parse(localStorage.getItem('favoriteRecipes'));
@@ -43,7 +44,7 @@ export default function RecipeProvider({ children }) {
       name: objInfo.strDrink || objInfo.strMeal,
       image: objInfo.strMealThumb || objInfo.strDrinkThumb,
       doneDate: date,
-      tags: objInfo.strTags || [],
+      tags: objInfo.strTags ? objInfo.strTags.split(',') : [],
     };
     return obj;
   };
@@ -117,6 +118,10 @@ export default function RecipeProvider({ children }) {
         drinkWithID.slice(TWO, FOUR),
         drinkWithID.slice(FOUR, SIX),
       ]);
+      const quantitys = Object.entries(meals[0])
+        .filter((str) => str[0].includes('strIngredient'))
+        .filter((str) => str[1]).map((str) => str[1]);
+      setQuantity(quantitys.length);
     }
     if (type === 'drinks') {
       const drinks = await getDrinkDetails(id);
@@ -136,6 +141,10 @@ export default function RecipeProvider({ children }) {
         mealWithID.slice(TWO, FOUR),
         mealWithID.slice(FOUR, SIX),
       ]);
+      const quantitys = Object.entries(drinks[0])
+        .filter((str) => str[0].includes('strIngredient'))
+        .filter((str) => str[1]).map((str) => str[1]);
+      setQuantity(quantitys.length);
     }
   };
   const values = useMemo(() => ({
@@ -144,13 +153,14 @@ export default function RecipeProvider({ children }) {
     itsMeal,
     recomendations,
     isFavorited,
+    quantity,
     fetchRecipe,
     localStorageSetUp,
     isButtonHidden,
     dataConstruction,
     favoriteRecipe,
     checkFavorite,
-  }), [data, ready, itsMeal, recomendations, isButtonHidden, isFavorited]);
+  }), [data, ready, itsMeal, recomendations, isButtonHidden, isFavorited, quantity]);
   return (
     <ContextRecipe.Provider value={ values }>
       {children}
