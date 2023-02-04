@@ -5,10 +5,10 @@ import Header from './Header';
 import shareSvg from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
-function FavoriteRecipes() {
+function Favorites() {
   const [copied, setCopied] = useState('');
   const [filter, setFilter] = useState([]);
-  const getLocalStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
+  const getLocalStorage = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
 
   const handleClick = (id, type) => {
     const url = `http://localhost:3000/${type}s/${id}`;
@@ -33,7 +33,7 @@ function FavoriteRecipes() {
 
   return (
     <div>
-      <Header />
+      <Header name="Favorite Recipes" iconProfile iconSearch={ false } />
       <button data-testid="filter-by-all-btn" onClick={ resetFilter }>All</button>
       <button
         data-testid="filter-by-meal-btn"
@@ -154,4 +154,4 @@ function FavoriteRecipes() {
   );
 }
 
-export default FavoriteRecipes;
+export default Favorites;

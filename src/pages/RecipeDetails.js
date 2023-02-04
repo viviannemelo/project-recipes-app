@@ -50,7 +50,7 @@ function Recipe(props) {
 
     return ingredient.map((i, index) => ({
       ingredient: i[1],
-      measure: measure[index] ? measure[index][1] : '',
+      measure: measure[index] && measure[index][1],
     }));
   };
   const startRecipe = () => {
@@ -156,29 +156,24 @@ function Recipe(props) {
           </div>
         )}
       <Carousel>
-        { recomendations.map((recomendation, index) => {
-          if (index > Number('3')) {
-            return;
-          }
-          return (
-            <Carousel.Item key={ `recipe ${index}` }>
-              {recomendation.map((recipe) => {
-                const item = recipe.strMeal || recipe.strDrink;
-                const image = recipe.strMealThumb || recipe.strDrinkThumb;
-                const { id: identidade } = recipe;
-                return (
-                  <div
-                    key={ identidade }
-                    data-testid={ `${identidade}-recommendation-card` }
-                  >
-                    <img src={ image } alt="Imagem" height="120px" />
-                    <p data-testid={ `${identidade}-recommendation-title` }>{item}</p>
-                  </div>
-                );
-              })}
-            </Carousel.Item>
-          );
-        })}
+        { recomendations.map((recomendation, index) => (
+          <Carousel.Item key={ `recipe ${index}` }>
+            {recomendation.map((recipe) => {
+              const item = recipe.strMeal || recipe.strDrink;
+              const image = recipe.strMealThumb || recipe.strDrinkThumb;
+              const { id: identidade } = recipe;
+              return (
+                <div
+                  key={ identidade }
+                  data-testid={ `${identidade}-recommendation-card` }
+                >
+                  <img src={ image } alt="Imagem" height="120px" />
+                  <p data-testid={ `${identidade}-recommendation-title` }>{item}</p>
+                </div>
+              );
+            })}
+          </Carousel.Item>
+        ))}
       </Carousel>
       {
         !isButtonHidden

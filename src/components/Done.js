@@ -6,7 +6,7 @@ import shareSvg from '../images/shareIcon.svg';
 function Done() {
   const [copied, setCopied] = useState('');
   const [filter, setFilter] = useState([]);
-  const getLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'));
+  const getLocalStorage = JSON.parse(localStorage.getItem('doneRecipes')) || [];
 
   const handleClick = (id, type) => {
     const url = `http://localhost:3000/${type}s/${id}`;

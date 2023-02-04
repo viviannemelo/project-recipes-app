@@ -54,7 +54,7 @@ function InProgress() {
 
     return ingredient.map((i, index) => ({
       ingredient: i[1],
-      measure: measure[index] ? measure[index][1] : '',
+      measure: measure[index] && measure[index][1],
     }));
   };
 
